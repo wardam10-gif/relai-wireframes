@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Relai — Wireframe v1</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif; }
+    .ph { background: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 8px, #f3f4f6 8px, #f3f4f6 16px); }
+    details[open] summary .chev { transform: rotate(90deg); }
+    summary::-webkit-details-marker { display: none; }
+  </style>
+</head>
+<body class="bg-white text-gray-800">
+
+  <!-- STICKY NAV -->
+  <nav class="sticky top-0 z-50 border-b border-gray-300 bg-white/90 backdrop-blur">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <div class="flex items-center gap-2">
+        <div class="ph h-8 w-8 rounded"></div>
+        <span class="font-semibold tracking-tight">[Relai Logo]</span>
+      </div>
+      <ul class="hidden gap-6 text-sm text-gray-600 md:flex">
+        <li>[Product]</li>
+        <li>[Solutions]</li>
+        <li>[Customers]</li>
+        <li>[Pricing]</li>
+        <li>[Resources]</li>
+      </ul>
+      <div class="flex items-center gap-3">
+        <span class="hidden text-sm text-gray-600 sm:inline">[Sign in]</span>
+        <button class="rounded border border-gray-800 px-3 py-1.5 text-sm font-medium">[Book demo]</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="border-b border-gray-200">
+    <div class="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-2 md:items-center">
+      <div>
+        <span class="mb-4 inline-block rounded border border-gray-300 px-2 py-0.5 text-xs uppercase tracking-wider text-gray-500">[Eyebrow — for correspondent lenders & non-bank IMBs]</span>
+        <h1 class="text-4xl font-bold leading-tight tracking-tight md:text-5xl">
+          [Headline — AI-driven mortgage automation that closes loans faster]
+        </h1>
+        <p class="mt-5 text-lg text-gray-600">
+          [Subhead — Relai replaces manual stare-and-compare with agentic document review, income calc, and condition clearing built for correspondent and IMB workflows.]
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <button class="rounded bg-gray-900 px-5 py-3 text-sm font-semibold text-white">[Primary CTA — Book a demo]</button>
+          <button class="rounded border border-gray-400 px-5 py-3 text-sm font-semibold text-gray-700">[Secondary — See the product]</button>
+        </div>
+        <p class="mt-4 text-xs text-gray-500">[Microcopy — SOC 2 Type II · ~45 sec avg review · No LOS rip-and-replace]</p>
+      </div>
+      <div class="ph flex h-80 items-center justify-center rounded border border-gray-300 text-sm text-gray-500">
+        [Hero visual placeholder — product screenshot / agent workflow]
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUE PROP ROW -->
+  <section class="border-b border-gray-200 bg-gray-50">
+    <div class="mx-auto max-w-6xl px-6 py-16">
+      <div class="mb-10 max-w-2xl">
+        <h2 class="text-2xl font-semibold tracking-tight md:text-3xl">[Section title — Why lenders pick Relai]</h2>
+        <p class="mt-2 text-gray-600">[Section subhead — Three outcomes that matter to ops, secondary, and the CFO.]</p>
+      </div>
+      <div class="grid gap-6 md:grid-cols-3">
+        <div class="rounded border border-gray-300 bg-white p-6">
+          <div class="ph mb-4 h-10 w-10 rounded"></div>
+          <h3 class="text-lg font-semibold">[Value prop 1 — Cut cycle time]</h3>
+          <p class="mt-2 text-sm text-gray-600">[Body — Agentic review compresses underwriting touchpoints from days to minutes, without adding headcount.]</p>
+        </div>
+        <div class="rounded border border-gray-300 bg-white p-6">
+          <div class="ph mb-4 h-10 w-10 rounded"></div>
+          <h3 class="text-lg font-semibold">[Value prop 2 — Catch defects early]</h3>
+          <p class="mt-2 text-sm text-gray-600">[Body — Purpose-built for agency overlays and investor guides so kickbacks and repurchase risk drop pre-purchase.]</p>
+        </div>
+        <div class="rounded border border-gray-300 bg-white p-6">
+          <div class="ph mb-4 h-10 w-10 rounded"></div>
+          <h3 class="text-lg font-semibold">[Value prop 3 — Deploy in weeks]</h3>
+          <p class="mt-2 text-sm text-gray-600">[Body — Sits on top of Encompass, Blue Sage, and ICE — no migration, no retraining your ops team.]</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="border-b border-gray-200">
+    <div class="mx-auto max-w-6xl px-6 py-16">
+      <div class="mb-10 max-w-2xl">
+        <h2 class="text-2xl font-semibold tracking-tight md:text-3xl">[Section title — How it works]</h2>
+        <p class="mt-2 text-gray-600">[Section subhead — From loan package in to clear-to-close, autonomously.]</p>
+      </div>
+      <ol class="grid gap-6 md:grid-cols-4">
+        <li class="rounded border border-gray-300 p-6">
+          <div class="mb-3 flex h-8 w-8 items-center justify-center rounded-full border border-gray-800 text-sm font-bold">1</div>
+          <h3 class="font-semibold">[Step 1 — Ingest]</h3>
+          <p class="mt-2 text-sm text-gray-600">[Body — Drop in loan packages from your LOS, email, or portal. Any format, any quality.]</p>
+        </li>
+        <li class="rounded border border-gray-300 p-6">
+          <div class="mb-3 flex h-8 w-8 items-center justify-center rounded-full border border-gray-800 text-sm font-bold">2</div>
+          <h3 class="font-semibold">[Step 2 — Classify & extract]</h3>
+          <p class="mt-2 text-sm text-gray-600">[Body — Agents split, classify, and extract every doc with guideline-aware context.]</p>
+        </li>
+        <li class="rounded border border-gray-300 p-6">
+          <div class="mb-3 flex h-8 w-8 items-center justify-center rounded-full border border-gray-800 text-sm font-bold">3</div>
+          <h3 class="font-semibold">[Step 3 — Underwrite & calc]</h3>
+          <p class="mt-2 text-sm text-gray-600">[Body — Income calc, asset review, and condition checks run against AUS + investor overlays.]</p>
+        </li>
+        <li class="rounded border border-gray-300 p-6">
+          <div class="mb-3 flex h-8 w-8 items-center justify-center rounded-full border border-gray-800 text-sm font-bold">4</div>
+          <h3 class="font-semibold">[Step 4 — Clear & deliver]</h3>
+          <p class="mt-2 text-sm text-gray-600">[Body — Conditions resolved, exceptions routed to humans, results pushed back to your LOS.]</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- PRODUCT VISUAL -->
+  <section class="border-b border-gray-200 bg-gray-50">
+    <div class="mx-auto max-w-6xl px-6 py-16">
+      <div class="mb-8 max-w-2xl">
+        <h2 class="text-2xl font-semibold tracking-tight md:text-3xl">[Section title — See Relai in action]</h2>
+        <p class="mt-2 text-gray-600">[Section subhead — Workbench, audit trail, and side-by-side doc review in a single surface.]</p>
+      </div>
+      <div class="ph flex h-96 items-center justify-center rounded border border-gray-300 text-sm text-gray-500">
+        [Product screenshot placeholder — annotated UI with agent activity feed]
+      </div>
+      <div class="mt-4 flex gap-2 text-xs text-gray-500">
+        <span class="rounded border border-gray-300 bg-white px-2 py-1">[Tab — Workbench]</span>
+        <span class="rounded border border-gray-300 bg-white px-2 py-1">[Tab — Audit trail]</span>
+        <span class="rounded border border-gray-300 bg-white px-2 py-1">[Tab — Guideline engine]</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIAL PROOF -->
+  <section class="border-b border-gray-200">
+    <div class="mx-auto max-w-6xl px-6 py-16">
+      <p class="mb-6 text-center text-xs uppercase tracking-wider text-gray-500">[Trusted by correspondent lenders & IMBs]</p>
+      <div class="mb-12 grid grid-cols-2 gap-4 md:grid-cols-6">
+        <div class="ph h-10 rounded"></div>
+        <div class="ph h-10 rounded"></div>
+        <div class="ph h-10 rounded"></div>
+        <div class="ph h-10 rounded"></div>
+        <div class="ph h-10 rounded"></div>
+        <div class="ph h-10 rounded"></div>
+      </div>
+      <figure class="mx-auto max-w-3xl rounded border border-gray-300 bg-gray-50 p-8 text-center">
+        <blockquote class="text-lg italic text-gray-700">
+          "[Customer quote — Relai cut our pre-purchase review from 3 days to 45 minutes and dropped defect rate by [X]%. It replaced three separate tools we were stitching together.]"
+        </blockquote>
+        <figcaption class="mt-6 flex items-center justify-center gap-3">
+          <div class="ph h-10 w-10 rounded-full"></div>
+          <div class="text-left text-sm">
+            <div class="font-semibold">[Name, Title]</div>
+            <div class="text-gray-500">[Top-25 correspondent lender]</div>
+          </div>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- DIFFERENTIATOR / COMPARISON -->
+  <section class="border-b border-gray-200 bg-gray-50">
+    <div class="mx-auto max-w-6xl px-6 py-16">
+      <div class="mb-8 max-w-2xl">
+        <h2 class="text-2xl font-semibold tracking-tight md:text-3xl">[Section title — Relai vs. Ocrolus]</h2>
+        <p class="mt-2 text-gray-600">[Section subhead — Ocrolus is document AI built for cash-flow lending. Relai is an agentic underwriter built for the mortgage stack.]</p>
+      </div>
+      <div class="overflow-x-auto rounded border border-gray-300 bg-white">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-gray-100 text-xs uppercase tracking-wider text-gray-600">
+            <tr>
+              <th class="p-4">[Capability]</th>
+              <th class="p-4">Relai</th>
+              <th class="p-4">Ocrolus</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            <tr>
+              <td class="p-4 font-medium">[Core design point]</td>
+              <td class="p-4">[Agentic mortgage underwriter — not just OCR]</td>
+              <td class="p-4">[Document AI + cash-flow analytics]</td>
+            </tr>
+            <tr>
+              <td class="p-4 font-medium">[Mortgage-native guidelines]</td>
+              <td class="p-4">[Agency + investor overlays built in]</td>
+              <td class="p-4">[Generic doc extraction, limited overlays]</td>
+            </tr>
+            <tr>
+              <td class="p-4 font-medium">[Income calc]</td>
+              <td class="p-4">[Automated, explainable, AUS-aligned]</td>
+              <td class="p-4">[Extraction-only — calc by customer]</td>
+            </tr>
+            <tr>
+              <td class="p-4 font-medium">[Condition clearing]</td>
+              <td class="p-4">[Agents resolve & loop with humans]</td>
+              <td class="p-4">[Not in scope]</td>
+            </tr>
+            <tr>
+              <td class="p-4 font-medium">[LOS integrations]</td>
+              <td class="p-4">[Encompass, Blue Sage, ICE native]</td>
+              <td class="p-4">[API-first, mortgage LOS via services]</td>
+            </tr>
+            <tr>
+              <td class="p-4 font-medium">[Time to value]</td>
+              <td class="p-4">[Weeks]</td>
+              <td class="p-4">[Quarters for mortgage use cases]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-3 text-xs text-gray-500">[Footnote — Comparison based on publicly available product info as of [date].]</p>
+    </div>
+  </section>
+
+  <!-- FAQ ACCORDION -->
+  <section class="border-b border-gray-200">
+    <div class="mx-auto max-w-3xl px-6 py-16">
+      <h2 class="mb-8 text-2xl font-semibold tracking-tight md:text-3xl">[Section title — FAQ]</h2>
+      <div class="divide-y divide-gray-200 rounded border border-gray-300">
+        <details class="group p-5">
+          <summary class="flex cursor-pointer items-center justify-between font-medium">
+            [Q1 — Do we have to replace our LOS?]
+            <span class="chev inline-block transition">›</span>
+          </summary>
+          <p class="mt-3 text-sm text-gray-600">[A — No. Relai runs alongside Encompass, Blue Sage, and ICE and writes results back into your existing workflow.]</p>
+        </details>
+        <details class="group p-5">
+          <summary class="flex cursor-pointer items-center justify-between font-medium">
+            [Q2 — How is this different from Ocrolus or generic OCR?]
+            <span class="chev inline-block transition">›</span>
+          </summary>
+          <p class="mt-3 text-sm text-gray-600">[A — Relai is an agentic underwriter. It goes beyond extraction to reason over guidelines, calc income, and clear conditions.]</p>
+        </details>
+        <details class="group p-5">
+          <summary class="flex cursor-pointer items-center justify-between font-medium">
+            [Q3 — Is it secure and compliant?]
+            <span class="chev inline-block transition">›</span>
+          </summary>
+          <p class="mt-3 text-sm text-gray-600">[A — SOC 2 Type II, GLBA-aligned, tenant isolation, full audit trail on every agent decision.]</p>
+        </details>
+        <details class="group p-5">
+          <summary class="flex cursor-pointer items-center justify-between font-medium">
+            [Q4 — How long does implementation take?]
+            <span class="chev inline-block transition">›</span>
+          </summary>
+          <p class="mt-3 text-sm text-gray-600">[A — Typical correspondent deployments go live in 4–8 weeks, including overlay configuration and LOS wiring.]</p>
+        </details>
+        <details class="group p-5">
+          <summary class="flex cursor-pointer items-center justify-between font-medium">
+            [Q5 — What loan types are supported?]
+            <span class="chev inline-block transition">›</span>
+          </summary>
+          <p class="mt-3 text-sm text-gray-600">[A — Conforming, jumbo, FHA, VA, and non-QM with configurable investor overlays.]</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-white">
+    <div class="mx-auto max-w-6xl px-6 py-12">
+      <div class="grid gap-8 md:grid-cols-5">
+        <div class="md:col-span-2">
+          <div class="mb-3 flex items-center gap-2">
+            <div class="ph h-8 w-8 rounded"></div>
+            <span class="font-semibold">[Relai Logo]</span>
+          </div>
+          <p class="text-sm text-gray-600">[Footer tagline — Agentic mortgage automation for correspondent lenders and non-bank IMBs.]</p>
+        </div>
+        <div>
+          <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500">[Product]</p>
+          <ul class="space-y-1 text-sm text-gray-600">
+            <li>[Overview]</li>
+            <li>[Workbench]</li>
+            <li>[Integrations]</li>
+            <li>[Security]</li>
+          </ul>
+        </div>
+        <div>
+          <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500">[Company]</p>
+          <ul class="space-y-1 text-sm text-gray-600">
+            <li>[About]</li>
+            <li>[Customers]</li>
+            <li>[Careers]</li>
+            <li>[Contact]</li>
+          </ul>
+        </div>
+        <div>
+          <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500">[Resources]</p>
+          <ul class="space-y-1 text-sm text-gray-600">
+            <li>[Blog]</li>
+            <li>[Case studies]</li>
+            <li>[Docs]</li>
+            <li>[Trust center]</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-10 flex flex-col items-start justify-between gap-3 border-t border-gray-200 pt-6 text-xs text-gray-500 md:flex-row md:items-center">
+        <span>[© YYYY Relai, Inc. — Wireframe v1]</span>
+        <span>[Privacy] · [Terms] · [Security]</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
