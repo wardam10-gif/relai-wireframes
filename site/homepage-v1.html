@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relai by TRAiNED — Homepage v1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_mobile.css">
+<style>
+  /* =========================================================
+     HOMEPAGE — reconciled to TRAiNED design system.
+     Design-system tokens (from colors_and_type.css) drive type,
+     neutrals and semantic status colors. We re-expose the marketing
+     palette (ocean / teal / violet) as local aliases matching the
+     pasted wireframe, so the composition is preserved but every
+     value traces back to the design system.
+     ========================================================= */
+  :root {
+    /* Marketing aliases → design-system tokens */
+    --navy:   var(--color-deep-navy);
+    --ocean:  var(--color-ocean-blue);
+    --gray:   var(--color-neutral-gray);
+    --white:  var(--color-white);
+    --teal:   var(--color-electric-teal);
+    --violet: var(--color-signal-violet);
+    --green:  var(--color-success-green);
+    --amber:  var(--color-amber-yellow);
+    --coral:  var(--color-alert-coral);
+
+    /* Ink ramp aliases */
+    --ink-90: var(--color-ink-2);
+    --ink-70: var(--color-ink-3);
+    --ink-50: var(--color-slate);
+    --ink-30: var(--color-gray-2);
+    --ink-10: var(--color-gray-3);
+    --ink-05: var(--color-off-white);
+
+    /* Layout */
+    --section-y: clamp(80px, 10vw, 140px);
+    --container: 1200px;
+
+    /* Tweakable accent — binds section eyebrows + gradient-text stop */
+    --accent: var(--violet);
+  }
+
+  * , *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--white);
+    color: var(--navy);
+    font-weight: 400;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a { color: inherit; text-decoration: none; border-bottom: none; }
+  img, svg { display: block; max-width: 100%; }
+  ul { list-style: none; }
+  .container { width: 100%; max-width: var(--container); margin: 0 auto; padding: 0 24px; }
+
+  /* =========================================================
+     WIREFRAME ANNOTATIONS — off by default; Tweak: annotationsOn
+     ========================================================= */
+  .annotation-banner {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--navy); color: var(--white);
+    padding: 10px 24px; text-align: center;
+    font-size: 13px; letter-spacing: 0.02em; font-weight: 500;
+    display: none;
+  }
+  .annotation-banner span { color: var(--teal); }
+  .section-label {
+    position: absolute; top: 16px; left: 16px;
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-50);
+    background: var(--ink-05);
+    padding: 4px 8px; border-radius: 3px;
+    pointer-events: none; z-index: 2;
+    display: none;
+  }
+  .section-label.on-dark { color: var(--ink-30); background: rgba(255,255,255,0.06); }
+  body.annotations-on .annotation-banner,
+  body.annotations-on .section-label { display: block; }
+  body.annotations-on .nav { top: 40px; }
+
+  /* =========================================================
+     NAV
+     ========================================================= */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--ink-10);
+    transition: top 180ms var(--ease-out);
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 24px; max-width: var(--container); margin: 0 auto;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; }
+  .nav-logo img { height: 28px; width: auto; }
+  .nav-logo .sep {
+    width: 1px; height: 18px; background: var(--ink-10);
+  }
+  .nav-logo .relai {
+    font-weight: 700; font-size: 17px; letter-spacing: -0.01em; color: var(--navy);
+    display: flex; flex-direction: column; line-height: 1;
+  }
+  .nav-logo .relai small {
+    font-size: 9px; letter-spacing: 0.14em; font-weight: 600;
+    color: var(--ink-50); margin-top: 3px; text-transform: uppercase;
+  }
+  .nav-links { display: flex; gap: 32px; font-size: 15px; font-weight: 500; color: var(--ink-70); }
+  .nav-links > li { position: relative; }
+  .nav-links a:hover { color: var(--navy); }
+  .nav-links .has-menu > a { display: inline-flex; align-items: center; gap: 4px; cursor: default; }
+  .nav-links .has-menu > a::after {
+    content: ""; width: 7px; height: 7px;
+    border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform 180ms var(--ease-out);
+  }
+  .nav-links .has-menu.open > a::after { transform: translateY(1px) rotate(225deg); }
+
+  /* ---- Mega menu ---- */
+  .mega {
+    position: absolute; top: calc(100% + 14px); right: 0;
+    min-width: 520px; padding: 22px;
+    background: var(--white); border: 1px solid var(--ink-10);
+    border-radius: 14px; box-shadow: 0 24px 48px -12px rgba(9,3,24,0.18);
+    opacity: 0; visibility: hidden; transform: translateY(-6px);
+    transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out), visibility 180ms;
+    z-index: 60;
+  }
+  .mega::before { /* bridge over the gap so hover doesn't drop */
+    content: ""; position: absolute; left: 0; right: 0; top: -14px; height: 14px;
+  }
+  .has-menu.open .mega { opacity: 1; visibility: visible; transform: translateY(0); }
+  .mega-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+  }
+  .mega-col h5 {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-50); margin-bottom: 10px;
+    padding-bottom: 10px; border-bottom: 1px solid var(--ink-10);
+  }
+  .mega-col ul { display: flex; flex-direction: column; gap: 2px; }
+  .mega-col li a {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px; border-radius: 8px;
+    font-size: 14px; font-weight: 500; color: var(--navy);
+    transition: background 140ms var(--ease-out), color 140ms var(--ease-out);
+  }
+  .mega-col li a:hover { background: var(--ink-05); color: var(--ocean); }
+  .mega-icon {
+    width: 28px; height: 28px; flex: 0 0 28px; border-radius: 7px;
+    background: linear-gradient(140deg, #EEF7E6 0%, #E6F1FB 60%, #DCE9FA 100%);
+    box-shadow: inset 0 0 0 1px rgba(30,64,175,0.08);
+    color: #1E3A8A; display: grid; place-items: center;
+  }
+  .nav-ctas { display: flex; gap: 10px; align-items: center; }
+  .nav-ghost { font-size: 15px; font-weight: 500; color: var(--ink-70); }
+  .nav-ghost:hover { color: var(--navy); }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-sans);
+    font-weight: 600; font-size: 15px; letter-spacing: -0.005em;
+    padding: 12px 22px; border-radius: var(--radius-pill);
+    border: none; cursor: pointer;
+    transition: all 160ms var(--ease-out);
+    white-space: nowrap;
+  }
+  .btn-primary { background: var(--navy); color: var(--white); }
+  .btn-primary:hover { background: var(--teal); color: var(--navy); }
+  .btn-ghost { background: transparent; color: var(--navy); padding: 12px 0; }
+  .btn-ghost:hover { color: var(--ocean); }
+  .btn-arrow::after { content: "→"; font-weight: 400; transition: transform 160ms var(--ease-out); }
+  .btn-arrow:hover::after { transform: translateX(4px); }
+
+  @media (max-width: 880px) {
+    .nav-links { display: none; }
+  }
+
+  /* =========================================================
+     HERO — three background modes via Tweak
+     ========================================================= */
+  .hero { position: relative; padding: clamp(80px, 12vw, 160px) 0 clamp(60px, 8vw, 100px); overflow: hidden; }
+  .hero-bg {
+    position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  }
+
+  /* bg: soft (default) */
+  body[data-herobg="soft"] .hero-bg {
+    background: linear-gradient(180deg, var(--ink-05) 0%, var(--white) 60%);
+  }
+  body[data-herobg="soft"] .hero-bg::before {
+    content:""; position:absolute; top:-20%; right:-10%; width:60%; height:90%;
+    background: radial-gradient(ellipse at center, rgba(107, 92, 246, 0.12), transparent 60%);
+  }
+  body[data-herobg="soft"] .hero-bg::after {
+    content:""; position:absolute; top:10%; left:-15%; width:50%; height:70%;
+    background: radial-gradient(ellipse at center, rgba(63, 147, 208, 0.15), transparent 60%);
+  }
+
+  /* bg: signal — full gradient */
+  body[data-herobg="signal"] .hero { color: var(--white); }
+  body[data-herobg="signal"] .hero-bg { background: var(--grad-hero); }
+  body[data-herobg="signal"] .hero-bg::before {
+    content:""; position:absolute; inset:0;
+    background: radial-gradient(ellipse at 70% 30%, rgba(46,211,196,0.25), transparent 55%),
+                radial-gradient(ellipse at 20% 80%, rgba(107,92,246,0.35), transparent 55%);
+  }
+  body[data-herobg="signal"] .hero h1 { color: var(--white); }
+  body[data-herobg="signal"] .hero h1 em { background: linear-gradient(135deg, var(--teal), #E8E94F); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  body[data-herobg="signal"] .hero-sub { color: rgba(255,255,255,0.75); }
+  body[data-herobg="signal"] .eyebrow-text { color: var(--teal); }
+  body[data-herobg="signal"] .btn-primary { background: var(--white); color: var(--navy); }
+  body[data-herobg="signal"] .btn-primary:hover { background: var(--teal); color: var(--navy); }
+  body[data-herobg="signal"] .btn-ghost { color: var(--white); }
+  body[data-herobg="signal"] .btn-ghost:hover { color: var(--teal); }
+
+  /* bg: grid — technical/blueprint */
+  body[data-herobg="grid"] .hero-bg {
+    background:
+      linear-gradient(var(--ink-10) 1px, transparent 1px) 0 0 / 48px 48px,
+      linear-gradient(90deg, var(--ink-10) 1px, transparent 1px) 0 0 / 48px 48px,
+      radial-gradient(ellipse at 70% 20%, rgba(107,92,246,0.10), transparent 50%),
+      linear-gradient(180deg, var(--ink-05), var(--white) 70%);
+    mask-image: linear-gradient(180deg, black 0%, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(180deg, black 0%, black 60%, transparent 100%);
+  }
+
+  .hero-inner {
+    position: relative; z-index: 1;
+    max-width: 1240px; margin: 0 auto; padding: 0 32px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: 56px;
+    align-items: center;
+  }
+  .hero-text { text-align: left; max-width: 620px; }
+  .eyebrow-line {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--ocean); margin-bottom: 28px;
+  }
+  .eyebrow-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--teal);
+    box-shadow: 0 0 0 4px rgba(46, 211, 196, 0.2);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .hero h1 {
+    font-size: clamp(40px, 5.2vw, 68px); line-height: 0.98;
+    font-weight: 800; letter-spacing: -0.035em; color: var(--navy);
+    margin-bottom: 24px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--ocean), var(--accent));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero-sub {
+    font-size: clamp(16px, 1.15vw, 18px); color: var(--ink-70);
+    max-width: 520px; margin-bottom: 36px; line-height: 1.55;
+  }
+  .hero-ctas { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+
+  /* =========================================================
+     ORCHESTRATION DIAGRAM
+     ========================================================= */
+  .orch {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 540px;
+    margin-left: auto;
+    --node-bg: var(--white);
+    --node-border: var(--ink-10);
+    --line: rgba(63, 147, 208, 0.32);
+    --line-active: var(--ocean);
+    --pill-bg: rgba(46, 211, 196, 0.14);
+    --pill-text: #0E7A6C;
+    --pill-border: rgba(46, 211, 196, 0.32);
+  }
+  .orch-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(9,3,24,0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(9,3,24,0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 78%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 78%);
+    border-radius: 24px;
+  }
+  .orch-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .orch-svg .line {
+    fill: none; stroke: var(--line); stroke-width: 1.4;
+    transition: stroke 240ms ease, stroke-width 240ms ease;
+  }
+  .orch-svg .line.active { stroke: var(--line-active); stroke-width: 2; }
+  .orch-svg .pulse {
+    fill: var(--teal);
+    opacity: 0;
+  }
+
+  .orch-center {
+    position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 96px; height: 96px;
+    border-radius: 22px;
+    background: var(--navy);
+    color: var(--white);
+    display: grid; place-items: center;
+    box-shadow: 0 22px 60px -18px rgba(9,3,24,0.42), 0 0 0 8px rgba(255,255,255,0.85);
+    z-index: 5;
+    cursor: default;
+  }
+  .orch-center .mark { width: 52px; height: auto; opacity: 0.98; }
+  .orch-center::before {
+    content: ""; position: absolute; inset: -16px;
+    border-radius: 30px;
+    border: 1px solid rgba(63, 147, 208, 0.35);
+    animation: orchRing 3.4s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes orchRing {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.18); opacity: 0; }
+  }
+
+  .orch-node {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+  }
+  .orch-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    background: var(--pill-bg);
+    color: var(--pill-text);
+    border: 1px solid var(--pill-border);
+    border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.06em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 180ms var(--ease-out), background 180ms ease, color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    white-space: nowrap;
+  }
+  .orch-pill:hover, .orch-node.is-active .orch-pill {
+    background: var(--ocean);
+    color: var(--white);
+    border-color: var(--ocean);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 22px -10px rgba(63,147,208,0.55);
+  }
+  .orch-pill .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor; opacity: 0.7;
+  }
+
+  .orch-caption {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, calc(50% + 84px));
+    background: var(--navy); color: var(--white);
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-size: 13px; line-height: 1.4;
+    max-width: 280px; text-align: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 200ms ease, transform 220ms var(--ease-out);
+    z-index: 6;
+    box-shadow: 0 16px 40px -12px rgba(9,3,24,0.4);
+  }
+  .orch-caption.show { opacity: 1; transform: translate(-50%, calc(50% + 92px)); }
+  .orch-caption::before {
+    content: ""; position: absolute;
+    top: -6px; left: 50%; transform: translateX(-50%) rotate(45deg);
+    width: 12px; height: 12px;
+    background: var(--navy);
+  }
+  .orch-caption strong { color: var(--teal); font-weight: 600; margin-right: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; display: block; margin-bottom: 4px; }
+
+  /* responsive */
+  @media (max-width: 960px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+    .hero-text { max-width: 100%; }
+    .orch { max-width: 460px; margin: 0 auto; }
+  }
+  @media (max-width: 520px) {
+    .orch { max-width: 360px; }
+    .orch-center { width: 76px; height: 76px; border-radius: 18px; }
+    .orch-center .mark { width: 42px; }
+    .orch-pill { font-size: 10px; padding: 6px 10px; }
+  }
+
+  /* =========================================================
+     TRUST
+     ========================================================= */
+  .trust { padding: 60px 0 40px; border-bottom: 1px solid var(--ink-10); position: relative; }
+  .trust-label {
+    text-align: center; font-size: 13px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-50);
+    margin-bottom: 28px;
+  }
+  .trust-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 40px; align-items: center; }
+  .trust-item {
+    height: 40px; display: grid; place-items: center;
+    font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+    color: var(--ink-50); letter-spacing: 0.04em;
+    border-radius: 6px;
+    background: repeating-linear-gradient(45deg, transparent 0 6px, rgba(108,100,128,0.04) 6px 12px);
+    border: 1px dashed var(--ink-10);
+  }
+  @media (max-width: 880px) { .trust-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  /* =========================================================
+     SPLIT
+     ========================================================= */
+  .split { padding: var(--section-y) 0; position: relative; }
+  .split-inner { display: grid; grid-template-columns: 1fr 1.05fr; gap: 80px; align-items: center; }
+  .split.reverse .split-inner { direction: rtl; }
+  .split.reverse .split-copy, .split.reverse .split-visual { direction: ltr; }
+
+  .split-eyebrow {
+    display: inline-block; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--coral);
+    margin-bottom: 20px; padding: 6px 12px;
+    background: rgba(242, 107, 107, 0.08);
+    border-radius: 100px;
+  }
+  .split.reverse .split-eyebrow { color: var(--teal); background: rgba(46, 211, 196, 0.1); }
+  .split-copy h2 {
+    font-size: clamp(32px, 4vw, 52px); line-height: 1.05;
+    font-weight: 800; letter-spacing: -0.025em; margin-bottom: 24px;
+    color: var(--navy);
+  }
+  .split-copy p { font-size: 17px; line-height: 1.6; color: var(--ink-70); margin-bottom: 28px; }
+  .split-list li {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 12px 0; border-bottom: 1px solid var(--ink-10);
+    font-size: 16px; color: var(--ink-70);
+  }
+  .split-list li svg { flex-shrink: 0; margin-top: 3px; }
+
+  /* ---- Product-shot window ---- */
+  .split-visual {
+    position: relative; aspect-ratio: 4 / 3.2; border-radius: 16px;
+    background: var(--navy); overflow: hidden;
+    box-shadow: 0 40px 80px -30px rgba(9, 3, 24, 0.45), 0 0 0 1px rgba(255,255,255,0.04);
+  }
+  .split-visual::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 36px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .window-dots { position: absolute; top: 13px; left: 14px; display: flex; gap: 6px; }
+  .window-dots span { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.12); }
+  .window-title {
+    position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+    font-family: var(--font-mono); font-size: 11px;
+    color: rgba(255,255,255,0.4); letter-spacing: 0.03em;
+  }
+  .ui-body { position: absolute; top: 36px; left: 0; right: 0; bottom: 0; padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 14px; }
+
+  .ui-rows { display: flex; flex-direction: column; gap: 8px; }
+  .ui-row {
+    display: grid; grid-template-columns: auto 1fr auto;
+    gap: 12px; padding: 11px 14px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px; align-items: center;
+    font-size: 12px; color: rgba(255,255,255,0.78);
+  }
+  .ui-row.alert { border-color: rgba(242, 107, 107, 0.4); background: rgba(242, 107, 107, 0.08); }
+  .ui-row.stuck { border-color: rgba(245, 184, 65, 0.3); background: rgba(245, 184, 65, 0.06); }
+  .ui-pill {
+    font-family: var(--font-mono); font-size: 10px;
+    padding: 3px 8px; border-radius: 100px;
+    background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8);
+    white-space: nowrap; font-weight: 500;
+  }
+  .ui-pill.red   { background: rgba(242, 107, 107, 0.2); color: #FFA5A5; }
+  .ui-pill.amber { background: rgba(245, 184, 65, 0.2); color: #FFD27A; }
+  .ui-pill.teal  { background: rgba(46, 211, 196, 0.2); color: var(--teal); }
+  .ui-icon {
+    width: 22px; height: 22px; border-radius: 6px; flex-shrink: 0;
+    display: grid; place-items: center;
+    background: rgba(63,147,208,0.16); color: #89C3EF;
+  }
+  .ui-icon.teal  { background: rgba(46,211,196,0.18); color: var(--teal); }
+  .ui-icon.amber { background: rgba(245,184,65,0.18); color: #FFD27A; }
+  .ui-icon.red   { background: rgba(242,107,107,0.22); color: #FFA5A5; }
+
+  .central-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .central-title { font-size: 13px; font-weight: 700; color: var(--white); letter-spacing: -0.01em; }
+  .central-title small {
+    display: block; font-size: 10px; color: rgba(255,255,255,0.45);
+    font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; margin-top: 3px;
+  }
+  .central-stats { display: flex; gap: 6px; }
+  .central-stat {
+    padding: 4px 10px; background: rgba(63, 147, 208, 0.15);
+    border: 1px solid rgba(63, 147, 208, 0.3); border-radius: 6px;
+    font-family: var(--font-mono); font-size: 11px; color: #89C3EF;
+  }
+  .central-stat.teal { background: rgba(46, 211, 196, 0.12); border-color: rgba(46, 211, 196, 0.3); color: var(--teal); }
+
+  /* little live-bar chart in Central header */
+  .central-sparks { display: flex; gap: 2px; align-items: flex-end; height: 18px; padding-top: 4px; }
+  .central-sparks span { width: 3px; background: rgba(46,211,196,0.5); border-radius: 1px; }
+
+  @media (max-width: 960px) {
+    .split-inner { grid-template-columns: 1fr; gap: 48px; }
+    .split.reverse .split-inner { direction: ltr; }
+  }
+
+  /* =========================================================
+     PILLARS
+     ========================================================= */
+  .pillars { padding: var(--section-y) 0; background: var(--ink-05); position: relative; }
+  .pillars-header { max-width: 720px; margin-bottom: 56px; }
+  .pillars-header h2 {
+    font-size: clamp(32px, 4vw, 52px); line-height: 1.05;
+    font-weight: 800; letter-spacing: -0.025em; margin-bottom: 16px; color: var(--navy);
+  }
+  .pillars-header p { font-size: 17px; color: var(--ink-70); }
+  .pillars-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 1px; background: var(--ink-10);
+    border-radius: 16px; overflow: hidden; border: 1px solid var(--ink-10);
+  }
+  .pillar {
+    background: var(--white); padding: 40px;
+    display: flex; flex-direction: column;
+    min-height: 300px;
+    transition: background 200ms var(--ease-out);
+    position: relative;
+  }
+  .pillar:hover { background: var(--ink-05); }
+  .pillar-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: linear-gradient(135deg, rgba(63, 147, 208, 0.12), rgba(107, 92, 246, 0.12));
+    display: grid; place-items: center; margin-bottom: 20px; color: var(--ocean);
+  }
+  .pillar-num {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--ocean); letter-spacing: 0.1em;
+    margin-bottom: 20px; font-weight: 600;
+  }
+  .pillar h3 {
+    font-size: 24px; line-height: 1.2;
+    font-weight: 700; letter-spacing: -0.02em; margin-bottom: 14px;
+    color: var(--navy);
+  }
+  .pillar p { font-size: 15px; color: var(--ink-70); line-height: 1.55; flex-grow: 1; }
+  @media (max-width: 720px) { .pillars-grid { grid-template-columns: 1fr; } }
+
+  /* =========================================================
+     STATS
+     ========================================================= */
+  .stats { padding: var(--section-y) 0; background: var(--navy); color: var(--white); position: relative; overflow: hidden; }
+  .stats::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(63, 147, 208, 0.25), transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(107, 92, 246, 0.18), transparent 50%),
+      radial-gradient(circle at 60% 20%, rgba(46, 211, 196, 0.12), transparent 40%);
+    pointer-events: none;
+  }
+  .stats-inner { position: relative; }
+  .stats-header { max-width: 720px; margin-bottom: 72px; }
+  .stats-header h2 {
+    font-size: clamp(32px, 4vw, 52px); font-weight: 800;
+    letter-spacing: -0.025em; line-height: 1.05; margin-bottom: 16px; color: var(--white);
+  }
+  .stats-header p { font-size: 17px; color: rgba(255,255,255,0.7); }
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; align-items: end; }
+  .stat { border-top: 1px solid rgba(255,255,255,0.18); padding-top: 24px; }
+  .stat-num {
+    font-size: clamp(56px, 7vw, 96px); font-weight: 800;
+    letter-spacing: -0.045em; line-height: 0.95;
+    background: linear-gradient(135deg, var(--white) 30%, var(--teal));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    margin-bottom: 12px;
+  }
+  .stat-label { font-size: 16px; color: rgba(255,255,255,0.72); max-width: 240px; }
+  @media (max-width: 720px) { .stats-grid { grid-template-columns: 1fr; gap: 32px; } }
+
+  /* =========================================================
+     PRODUCTS
+     ========================================================= */
+  .products { padding: var(--section-y) 0; }
+  .products-header { max-width: 720px; margin-bottom: 72px; }
+  .products-header h2 {
+    font-size: clamp(32px, 4vw, 52px); font-weight: 800;
+    letter-spacing: -0.025em; line-height: 1.05; margin-bottom: 16px; color: var(--navy);
+  }
+  .product-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px;
+    align-items: center; padding: 60px 0;
+    border-top: 1px solid var(--ink-10);
+  }
+  .product-row:last-child { border-bottom: 1px solid var(--ink-10); }
+  .product-row.reverse { direction: rtl; }
+  .product-row.reverse > * { direction: ltr; }
+  .product-tag {
+    font-family: var(--font-mono); font-size: 11px; color: var(--ocean);
+    letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; margin-bottom: 16px;
+  }
+  .product-row h3 {
+    font-size: clamp(28px, 3vw, 40px); font-weight: 800;
+    line-height: 1.1; letter-spacing: -0.025em; margin-bottom: 20px; color: var(--navy);
+  }
+  .product-row p { font-size: 16px; color: var(--ink-70); margin-bottom: 24px; line-height: 1.6; }
+  .product-link { display: inline-flex; align-items: center; gap: 6px; color: var(--ocean); font-weight: 600; font-size: 15px; }
+  .product-link:hover { color: var(--violet); }
+
+  .product-visual {
+    aspect-ratio: 5 / 4; border-radius: 14px;
+    background: linear-gradient(135deg, var(--ink-05), var(--white));
+    border: 1px solid var(--ink-10);
+    padding: 20px; position: relative; overflow: hidden;
+    box-shadow: 0 24px 48px -24px rgba(9,3,24,0.14);
+  }
+  .product-visual.dark { background: var(--navy); border-color: rgba(255,255,255,0.08); }
+
+  .mock-tabs {
+    display: flex; gap: 4px;
+    padding-bottom: 10px; border-bottom: 1px solid var(--ink-10); margin-bottom: 14px;
+  }
+  .mock-tab { padding: 6px 12px; font-size: 11px; font-weight: 500; color: var(--ink-50); border-radius: 6px; }
+  .mock-tab.active { background: var(--navy); color: var(--white); }
+  .mock-card {
+    padding: 11px 14px; background: var(--white);
+    border: 1px solid var(--ink-10); border-radius: 8px; margin-bottom: 8px;
+    display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; font-size: 12px;
+  }
+  .mock-card .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); }
+  .mock-card .dot.violet { background: var(--violet); }
+  .mock-card .dot.amber  { background: var(--amber); }
+  .mock-time { font-family: var(--font-mono); font-size: 10px; color: var(--ink-50); }
+  .mock-stat-band {
+    margin-top: 12px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+  }
+  .mock-stat {
+    padding: 10px 12px; background: var(--ink-05); border-radius: 8px;
+    font-size: 11px; color: var(--ink-50);
+  }
+  .mock-stat strong { display: block; color: var(--navy); font-weight: 700; font-size: 16px; letter-spacing: -0.01em; margin-top: 2px; }
+
+  @media (max-width: 860px) { .product-row { grid-template-columns: 1fr; gap: 40px; } .product-row.reverse { direction: ltr; } }
+
+  /* =========================================================
+     TESTIMONIAL
+     ========================================================= */
+  .testimonial { padding: var(--section-y) 0; background: var(--ink-05); }
+  .quote { max-width: 880px; margin: 0 auto; text-align: center; }
+  .quote-mark { font-size: 64px; line-height: 1; color: var(--ocean); opacity: 0.3; margin-bottom: 16px; font-family: Georgia, serif; }
+  .quote blockquote {
+    font-size: clamp(26px, 3vw, 40px); line-height: 1.25;
+    font-weight: 600; letter-spacing: -0.02em; color: var(--navy); margin-bottom: 32px;
+    text-wrap: pretty;
+  }
+  .quote cite { font-style: normal; font-size: 15px; color: var(--ink-70); }
+  .quote cite strong { display: block; color: var(--navy); font-weight: 700; margin-bottom: 2px; }
+  .quote-logo {
+    width: 120px; height: 32px;
+    border-radius: 4px; margin: 0 auto 24px;
+    display: grid; place-items: center;
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--ink-50); letter-spacing: 0.05em;
+    background: repeating-linear-gradient(45deg, transparent 0 6px, rgba(108,100,128,0.04) 6px 12px);
+    border: 1px dashed var(--ink-10);
+  }
+
+  /* =========================================================
+     FINAL CTA
+     ========================================================= */
+  .cta-final { padding: var(--section-y) 0; text-align: center; background: linear-gradient(180deg, var(--white), var(--ink-05)); position: relative; }
+  .cta-final h2 {
+    font-size: clamp(40px, 5.5vw, 72px); font-weight: 800;
+    letter-spacing: -0.035em; line-height: 1;
+    margin: 0 auto 24px; max-width: 880px; color: var(--navy);
+  }
+  .cta-final p { font-size: 18px; color: var(--ink-70); margin: 0 auto 40px; max-width: 560px; }
+
+  /* =========================================================
+     FOOTER
+     ========================================================= */
+  footer { background: var(--navy); color: var(--white); padding: 80px 0 40px; }
+  .footer-grid {
+    display: grid; grid-template-columns: 1.5fr repeat(4, 1fr); gap: 40px;
+    padding-bottom: 56px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 28px;
+  }
+  .footer-brand img { height: 32px; margin-bottom: 20px; filter: brightness(0) invert(1); opacity: 0.95; }
+  .footer-brand .relai { color: var(--white); margin-bottom: 20px; }
+  .footer-brand p { font-size: 14px; color: rgba(255,255,255,0.6); max-width: 280px; line-height: 1.6; }
+  .footer-col h4 {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.1em; color: rgba(255,255,255,0.45);
+    margin-bottom: 20px; font-weight: 600;
+  }
+  .footer-col ul { display: flex; flex-direction: column; gap: 12px; }
+  .footer-col a { font-size: 14px; color: rgba(255,255,255,0.78); }
+  .footer-col a:hover { color: var(--teal); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: rgba(255,255,255,0.4); }
+  .footer-bottom a { color: rgba(255,255,255,0.55); }
+  .footer-bottom a:hover { color: var(--teal); }
+  @media (max-width: 860px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+
+  /* =========================================================
+     ANIMATIONS
+     ========================================================= */
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .hero .eyebrow-line { animation: fadeInUp 600ms var(--ease-out) both; animation-delay: 100ms; }
+  .hero h1 { animation: fadeInUp 700ms var(--ease-out) both; animation-delay: 200ms; }
+  .hero-sub { animation: fadeInUp 700ms var(--ease-out) both; animation-delay: 350ms; }
+  .hero-ctas { animation: fadeInUp 700ms var(--ease-out) both; animation-delay: 500ms; }
+
+  /* =========================================================
+     TWEAKS PANEL
+     ========================================================= */
+  #tweaks {
+    position: fixed; right: 18px; bottom: 18px; z-index: 200;
+    width: 280px; padding: 18px; border-radius: 14px;
+    background: var(--white); border: 1px solid var(--ink-10);
+    box-shadow: 0 24px 48px -12px rgba(9,3,24,0.20);
+    font-family: var(--font-sans); color: var(--navy);
+    display: none;
+  }
+  #tweaks.on { display: block; }
+  #tweaks h4 {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-50); font-weight: 700; margin-bottom: 14px;
+    font-family: var(--font-mono);
+  }
+  #tweaks .row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  #tweaks .row:last-child { margin-bottom: 0; }
+  #tweaks label { font-size: 12px; font-weight: 600; color: var(--navy); }
+  #tweaks .segmented {
+    display: flex; gap: 2px; background: var(--ink-05);
+    border-radius: 8px; padding: 2px;
+  }
+  #tweaks .segmented button {
+    flex: 1; padding: 7px 8px; font-size: 11px; font-weight: 600;
+    border: 0; background: transparent; color: var(--ink-70);
+    border-radius: 6px; cursor: pointer; font-family: var(--font-sans);
+    transition: all 140ms var(--ease-out);
+  }
+  #tweaks .segmented button.active { background: var(--white); color: var(--navy); box-shadow: var(--shadow-sm); }
+  #tweaks .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+  #tweaks .toggle {
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    user-select: none; font-size: 12px; font-weight: 500; color: var(--ink-70);
+  }
+  #tweaks .toggle input { accent-color: var(--ocean); }
+</style>
+</head>
+<body data-herobg="soft">
+
+<!-- Wireframe banner (hidden unless annotations-on) -->
+<div class="annotation-banner">
+  <span>WIREFRAME</span> · Relai homepage v1 · reconciled to design system · iterate freely
+</div>
+
+<!-- ============================================
+     NAV
+     ============================================ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <img src="../assets/logo-full-color.png" alt="TRAiNED">
+    </a>
+    <ul class="nav-links">
+      <li><a href="#">Platform</a></li>
+      <li><a href="#">Solutions</a></li>
+      <li><a href="#">Customers</a></li>
+      <li class="has-menu" data-menu="resources">
+        <a href="#" aria-haspopup="true" aria-expanded="false">Resources</a>
+        <div class="mega" role="menu">
+          <div class="mega-grid">
+            <div class="mega-col">
+              <h5>Resources</h5>
+              <ul>
+                <li><a href="resources.html"><span class="mega-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M11 8h6M11 12h6M11 16h4"/></svg></span>Resources</a></li>
+                <li><a href="#"><span class="mega-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>Journal</a></li>
+                <li><a href="#"><span class="mega-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 4v16"/></svg></span>Glossary</a></li>
+                <li><a href="#"><span class="mega-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>Search</a></li>
+              </ul>
+            </div>
+            <div class="mega-col">
+              <h5>Company</h5>
+              <ul>
+                <li><a href="#"><span class="mega-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8v8M12 8v8M17 8v8"/></svg></span>About</a></li>
+                <li><a href="#"><span class="mega-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z"/><path d="M4 10h16M8 14h4"/></svg></span>Newsroom</a></li>
+                <li><a href="#"><span class="mega-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3z"/></svg></span>Security</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li><a href="#">Pricing</a></li>
+    </ul>
+    <div class="nav-ctas">
+      <a href="#" class="nav-ghost">Log in</a>
+      <a href="#" class="btn btn-primary">Book a Discovery Call</a>
+      <button class="mobile-hamburger" id="mobileMenuBtn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================ MOBILE DRAWER ============================================ -->
+<div class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+  <div class="backdrop" data-close></div>
+  <aside class="sheet" role="dialog" aria-label="Menu">
+    <div class="drawer-top">
+      <img src="../assets/logo-full-color.png" alt="TRAiNED">
+      <button class="drawer-close" data-close aria-label="Close menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <ul class="drawer-links">
+      <li><a href="#">Platform</a></li>
+      <li><a href="#">Solutions</a></li>
+      <li><a href="#">Customers</a></li>
+      <li>
+        <details>
+          <summary>Resources</summary>
+          <ul>
+            <li><a href="resources.html">Resource Library</a></li>
+            <li><a href="#">Journal</a></li>
+            <li><a href="#">Glossary</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Newsroom</a></li>
+            <li><a href="#">Security</a></li>
+          </ul>
+        </details>
+      </li>
+      <li><a href="#">Pricing</a></li>
+    </ul>
+    <div class="drawer-bottom">
+      <a href="#" class="login">Log in</a>
+      <a href="#" class="cta">Book a Discovery Call</a>
+    </div>
+  </aside>
+</div>
+
+<script>
+(function(){
+  const drawer = document.getElementById('mobileDrawer');
+  const btn = document.getElementById('mobileMenuBtn');
+  if (!drawer || !btn) return;
+  const open = () => { drawer.classList.add('open'); document.body.classList.add('drawer-open'); drawer.setAttribute('aria-hidden','false'); };
+  const close = () => { drawer.classList.remove('open'); document.body.classList.remove('drawer-open'); drawer.setAttribute('aria-hidden','true'); };
+  btn.addEventListener('click', open);
+  drawer.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+  drawer.querySelectorAll('.drawer-links a').forEach(a => a.addEventListener('click', close));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && drawer.classList.contains('open')) close(); });
+})();
+</script>
+
+<!-- ============================================
+     HERO
+     ============================================ -->
+<section class="hero">
+  <span class="section-label">01 · HERO</span>
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="eyebrow-line">
+        <span class="eyebrow-dot"></span>
+        <span class="eyebrow-text">The Orchestration Layer for Mortgage Production</span>
+      </div>
+      <h1>Close more loans.<br>Without hiring <em>more people.</em></h1>
+      <p class="hero-sub">
+        Relai sits inside your existing LOS and orchestrates document workflows across every system, team, and handoff — so loans move forward and no one burns out keeping it all together.
+      </p>
+      <div class="hero-ctas">
+        <a href="#" class="btn btn-primary btn-arrow">Book a Discovery Call</a>
+        <a href="#" class="btn btn-ghost btn-arrow">See how it works</a>
+      </div>
+    </div>
+
+    <!-- ORCHESTRATION DIAGRAM -->
+    <div class="orch" id="orch" aria-label="Relai orchestration diagram">
+      <div class="orch-grid-bg" aria-hidden="true"></div>
+
+      <!-- connection lines (curved paths from center 250,250 to each node) -->
+      <svg class="orch-svg" viewBox="0 0 500 500" preserveAspectRatio="none" aria-hidden="true">
+        <!-- top-left: ENCOMPASS @ (90,90) -->
+        <path class="line" data-line="encompass" d="M 250 250 C 200 230, 140 160, 90 90"/>
+        <!-- top: BORROWER @ (250,60) -->
+        <path class="line" data-line="borrower" d="M 250 250 L 250 60"/>
+        <!-- top-right: APPRAISAL @ (410,90) -->
+        <path class="line" data-line="appraisal" d="M 250 250 C 300 230, 360 160, 410 90"/>
+        <!-- right: TITLE @ (450,250) -->
+        <path class="line" data-line="title" d="M 250 250 L 450 250"/>
+        <!-- bottom-right: UNDERWRITING @ (410,410) -->
+        <path class="line" data-line="uw" d="M 250 250 C 320 290, 380 350, 410 410"/>
+        <!-- bottom: COMPLIANCE @ (250,440) -->
+        <path class="line" data-line="compliance" d="M 250 250 L 250 440"/>
+        <!-- bottom-left: INVESTOR @ (90,410) -->
+        <path class="line" data-line="investor" d="M 250 250 C 180 290, 120 350, 90 410"/>
+        <!-- left: LOS @ (50,250) -->
+        <path class="line" data-line="los" d="M 250 250 L 50 250"/>
+
+        <!-- pulse dots: one per line, animated via offset-path -->
+        <circle class="pulse" data-pulse="encompass" r="3"/>
+        <circle class="pulse" data-pulse="borrower" r="3"/>
+        <circle class="pulse" data-pulse="appraisal" r="3"/>
+        <circle class="pulse" data-pulse="title" r="3"/>
+        <circle class="pulse" data-pulse="uw" r="3"/>
+        <circle class="pulse" data-pulse="compliance" r="3"/>
+        <circle class="pulse" data-pulse="investor" r="3"/>
+        <circle class="pulse" data-pulse="los" r="3"/>
+      </svg>
+
+      <!-- center node -->
+      <div class="orch-center" aria-label="Relai">
+        <svg class="mark" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- TRAiNED-style mark: stylized R / orchestration glyph -->
+          <path d="M16 18 H44 C54 18 60 24 60 32 C60 40 54 46 44 46 H30 L46 64 H36 L22 46 H22 V64 H16 V18 Z M22 24 V40 H44 C50 40 54 36 54 32 C54 28 50 24 44 24 H22 Z" fill="currentColor"/>
+        </svg>
+      </div>
+
+      <!-- nodes positioned in % of container -->
+      <div class="orch-node" data-node="encompass" style="left:18%; top:18%;"
+           data-title="Encompass / LOS" data-desc="Reads loan state, posts conditions and tasks back as Relai resolves them.">
+        <span class="orch-pill"><span class="dot"></span>ENCOMPASS</span>
+      </div>
+      <div class="orch-node" data-node="borrower" style="left:50%; top:12%;"
+           data-title="Borrower" data-desc="Auto-collects missing docs by SMS and email — no LO pings required.">
+        <span class="orch-pill"><span class="dot"></span>BORROWER</span>
+      </div>
+      <div class="orch-node" data-node="appraisal" style="left:82%; top:18%;"
+           data-title="Appraisal" data-desc="Orders, tracks, and reconciles appraisals across AMCs in one queue.">
+        <span class="orch-pill"><span class="dot"></span>APPRAISAL</span>
+      </div>
+      <div class="orch-node" data-node="title" style="left:90%; top:50%;"
+           data-title="Title &amp; Escrow" data-desc="Pulls title commitments, flags exceptions, and routes to the right team.">
+        <span class="orch-pill"><span class="dot"></span>TITLE</span>
+      </div>
+      <div class="orch-node" data-node="uw" style="left:82%; top:82%;"
+           data-title="Underwriting" data-desc="Pre-clears conditions and stages loans for UW so files land decision-ready.">
+        <span class="orch-pill"><span class="dot"></span>UNDERWRITING</span>
+      </div>
+      <div class="orch-node" data-node="compliance" style="left:50%; top:88%;"
+           data-title="Compliance" data-desc="Validates disclosures, TRID, and state rules before each handoff.">
+        <span class="orch-pill"><span class="dot"></span>COMPLIANCE</span>
+      </div>
+      <div class="orch-node" data-node="investor" style="left:18%; top:82%;"
+           data-title="Investor Delivery" data-desc="Packages and delivers post-close files to the right investor automatically.">
+        <span class="orch-pill"><span class="dot"></span>INVESTOR</span>
+      </div>
+      <div class="orch-node" data-node="los" style="left:10%; top:50%;"
+           data-title="Doc Vault / OCR" data-desc="Classifies and indexes every doc that hits the file — split, named, stacked.">
+        <span class="orch-pill"><span class="dot"></span>DOC VAULT</span>
+      </div>
+
+      <!-- caption tooltip -->
+      <div class="orch-caption" id="orchCaption" aria-live="polite">
+        <strong></strong>
+        <span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     TRUST
+     ============================================ -->
+<section style="position: relative;">
+  <span class="section-label">02 · SOCIAL PROOF</span>
+  <div class="trust container">
+    <p class="trust-label">Trusted by lenders orchestrating billions in loan volume</p>
+    <div class="trust-grid">
+      <div class="trust-item">LENDER LOGO</div>
+      <div class="trust-item">LENDER LOGO</div>
+      <div class="trust-item">LENDER LOGO</div>
+      <div class="trust-item">LENDER LOGO</div>
+      <div class="trust-item">LENDER LOGO</div>
+      <div class="trust-item">LENDER LOGO</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     PROBLEM
+     ============================================ -->
+<section class="split">
+  <span class="section-label">03 · PROBLEM</span>
+  <div class="container">
+    <div class="split-inner">
+      <div class="split-copy">
+        <span class="split-eyebrow">The Problem</span>
+        <h2>Your processors aren't slow.<br>They're stuck.</h2>
+        <p>Between every system in your tech stack is a person — manually moving data, chasing conditions, and making sure nothing got dropped. That's not a people problem. That's a connection problem. And it's where your cost per loan hides.</p>
+        <ul class="split-list">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F26B6B" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg> Loans stalling at every handoff</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F26B6B" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg> Processors buried in busywork</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F26B6B" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg> Overhead that grows with volume</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F26B6B" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg> No visibility across the pipeline</li>
+        </ul>
+      </div>
+      <div class="split-visual">
+        <div class="window-dots"><span></span><span></span><span></span></div>
+        <div class="window-title">loan-12847.file</div>
+        <div class="ui-body">
+          <div class="ui-rows">
+            <div class="ui-row stuck">
+              <span class="ui-icon amber"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="9"/></svg></span>
+              <div>Income docs — awaiting review</div>
+              <span class="ui-pill amber">STALLED 4d</span>
+            </div>
+            <div class="ui-row alert">
+              <span class="ui-icon red"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg></span>
+              <div>Title work — manual touch req'd</div>
+              <span class="ui-pill red">EXCEPTION</span>
+            </div>
+            <div class="ui-row stuck">
+              <span class="ui-icon amber"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="9"/></svg></span>
+              <div>Appraisal handoff — no update</div>
+              <span class="ui-pill amber">STALLED 6d</span>
+            </div>
+            <div class="ui-row alert">
+              <span class="ui-icon red"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg></span>
+              <div>Condition tracking — who owns?</div>
+              <span class="ui-pill red">UNCLEAR</span>
+            </div>
+            <div class="ui-row">
+              <span class="ui-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></span>
+              <div>Processor follow-up #3</div>
+              <span class="ui-pill">MANUAL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     SOLUTION
+     ============================================ -->
+<section class="split reverse" style="background: var(--ink-05);">
+  <span class="section-label">04 · SOLUTION</span>
+  <div class="container">
+    <div class="split-inner">
+      <div class="split-copy">
+        <span class="split-eyebrow">The Solution</span>
+        <h2>Scale your operation<br>without scaling your costs.</h2>
+        <p>Relai plugs into your existing LOS and orchestrates document workflows across every system and every stage of production. The predictable work gets automated. True exceptions get routed to your experts with full context and a clear next step. Relai Central gives your ops leaders one command center to see, prioritize, and govern everything moving through the pipeline.</p>
+        <ul class="split-list">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2ED3C4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg> No rip and replace</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2ED3C4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg> No lengthy implementation</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2ED3C4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg> Pay per closed loan</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2ED3C4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg> Cost drops as volume climbs</li>
+        </ul>
+      </div>
+      <div class="split-visual">
+        <div class="window-dots"><span></span><span></span><span></span></div>
+        <div class="window-title">relai central · production view</div>
+        <div class="ui-body">
+          <div class="central-header">
+            <div class="central-title">
+              Pipeline Overview
+              <small>LIVE · 2,847 files</small>
+            </div>
+            <div class="central-stats">
+              <span class="central-stat">4 exceptions</span>
+              <span class="central-stat teal">98% flowing</span>
+            </div>
+          </div>
+          <div class="central-sparks" aria-hidden="true">
+            <span style="height:40%"></span><span style="height:65%"></span><span style="height:50%"></span>
+            <span style="height:80%"></span><span style="height:60%"></span><span style="height:92%"></span>
+            <span style="height:70%"></span><span style="height:55%"></span><span style="height:85%"></span>
+            <span style="height:95%"></span><span style="height:72%"></span><span style="height:88%"></span>
+            <span style="height:78%"></span><span style="height:90%"></span><span style="height:68%"></span>
+            <span style="height:82%"></span><span style="height:98%"></span><span style="height:75%"></span>
+          </div>
+          <div class="ui-rows">
+            <div class="ui-row">
+              <span class="ui-icon teal"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>
+              <div>Document classification</div>
+              <span class="ui-pill teal">AUTO</span>
+            </div>
+            <div class="ui-row">
+              <span class="ui-icon teal"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>
+              <div>Data validation · batch</div>
+              <span class="ui-pill teal">AUTO</span>
+            </div>
+            <div class="ui-row">
+              <span class="ui-icon teal"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>
+              <div>Condition tracking</div>
+              <span class="ui-pill teal">AUTO</span>
+            </div>
+            <div class="ui-row alert">
+              <span class="ui-icon red"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <div>Appraisal variance → Sarah L.</div>
+              <span class="ui-pill red">ROUTED</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     PILLARS
+     ============================================ -->
+<section class="pillars">
+  <span class="section-label">05 · VALUE PILLARS</span>
+  <div class="container">
+    <div class="pillars-header">
+      <h2>Built for how<br>lenders need to grow.</h2>
+      <p>Four principles that make Relai different from every point solution in your stack.</p>
+    </div>
+    <div class="pillars-grid">
+
+      <div class="pillar">
+        <div class="pillar-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 10v6M4.22 4.22l4.24 4.24m7.08 7.08l4.24 4.24M1 12h6m10 0h6M4.22 19.78l4.24-4.24m7.08-7.08l4.24-4.24"/></svg>
+        </div>
+        <div class="pillar-num">01 / CENTRAL</div>
+        <h3>Chase Nothing.<br>Relai Everything.</h3>
+        <p>One command center for your entire pipeline. Suppress what doesn't matter. Prioritize what does. See everything. Act on what matters.</p>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <div class="pillar-num">02 / ORCHESTRATION</div>
+        <h3>Relay Across Silos.<br>Not Around Them.</h3>
+        <p>The mortgage tech stack wasn't built to connect. Relai ties your silos into one assembly line. More capacity. Less overhead. No workarounds.</p>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="pillar-num">03 / AUTOMATION</div>
+        <h3>Automate the Obvious.<br>Relay the Rest.</h3>
+        <p>Document classification. Data validation. Condition tracking. Status updates. Relai automates the predictable and routes exceptions with full context.</p>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <div class="pillar-num">04 / DEPLOYMENT</div>
+        <h3>Start Where<br>Loans Get Stuck.</h3>
+        <p>LOS-agnostic. No rip and replace. Deploy by stage, team, or workflow. Per-closed-loan pricing means you pay for what closes, not what you install.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     STATS
+     ============================================ -->
+<section class="stats">
+  <span class="section-label on-dark">06 · PROOF</span>
+  <div class="container stats-inner">
+    <div class="stats-header">
+      <h2>The numbers lenders see<br>when the relay runs clean.</h2>
+      <p>Pay per closed loan. Cost drops as volume climbs. These are the outcomes customers see on average.</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="stat-num">90%</div>
+        <p class="stat-label">Reduction in manual touches per loan</p>
+      </div>
+      <div class="stat">
+        <div class="stat-num">+15×</div>
+        <p class="stat-label">Return on investment at scale</p>
+      </div>
+      <div class="stat">
+        <div class="stat-num">0</div>
+        <p class="stat-label">Systems ripped and replaced</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     PRODUCTS
+     ============================================ -->
+<section class="products">
+  <span class="section-label">07 · PRODUCT</span>
+  <div class="container">
+    <div class="products-header">
+      <h2>How Relai works<br>inside your LOS.</h2>
+    </div>
+
+    <!-- Product 1 — Relai Central -->
+    <div class="product-row">
+      <div>
+        <div class="product-tag">RELAI CENTRAL</div>
+        <h3>The command center for your pipeline.</h3>
+        <p>Every file in production. Every task, document, and workflow across every stage. One place to see what's moving, what's stalled, and what needs attention right now. Suppress what doesn't matter. Prioritize what does.</p>
+        <a href="#" class="product-link">Explore Relai Central →</a>
+      </div>
+      <div class="product-visual">
+        <div class="mock-tabs">
+          <span class="mock-tab active">Pipeline</span>
+          <span class="mock-tab">Exceptions</span>
+          <span class="mock-tab">Workflows</span>
+          <span class="mock-tab">Governance</span>
+        </div>
+        <div class="mock-card"><span class="dot"></span><div><strong style="font-weight:600;">Loan #24-8291</strong> · Underwriting</div><span class="mock-time">12m ago</span></div>
+        <div class="mock-card"><span class="dot violet"></span><div><strong style="font-weight:600;">Loan #24-8290</strong> · Document review</div><span class="mock-time">24m ago</span></div>
+        <div class="mock-card"><span class="dot amber"></span><div><strong style="font-weight:600;">Loan #24-8289</strong> · Awaiting condition</div><span class="mock-time">1h ago</span></div>
+        <div class="mock-card"><span class="dot"></span><div><strong style="font-weight:600;">Loan #24-8288</strong> · Clear to close</div><span class="mock-time">2h ago</span></div>
+        <div class="mock-stat-band">
+          <div class="mock-stat">In production<strong>2,847</strong></div>
+          <div class="mock-stat">Flowing<strong>98%</strong></div>
+          <div class="mock-stat">Exceptions<strong>4</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 2 — Orchestration -->
+    <div class="product-row reverse">
+      <div>
+        <div class="product-tag">WORKFLOW ORCHESTRATION</div>
+        <h3>The predictable work moves itself.</h3>
+        <p>Relai automatically classifies documents, validates data, tracks conditions, and manages status updates — the predictable, repeatable work that consumes processor time without requiring human judgment. Your team gets their day back.</p>
+        <a href="#" class="product-link">See the workflows →</a>
+      </div>
+      <div class="product-visual dark">
+        <svg viewBox="0 0 400 280" style="width:100%; height:100%;" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="flow" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#3F93D0"/>
+              <stop offset="1" stop-color="#2ED3C4"/>
+            </linearGradient>
+          </defs>
+          <path d="M 110 60 Q 160 60 200 140" stroke="url(#flow)" stroke-width="1.5" fill="none" opacity="0.55"/>
+          <path d="M 110 140 L 168 140"           stroke="url(#flow)" stroke-width="1.5" fill="none" opacity="0.8"/>
+          <path d="M 110 220 Q 160 220 200 140"  stroke="url(#flow)" stroke-width="1.5" fill="none" opacity="0.55"/>
+          <path d="M 232 140 L 290 140"           stroke="url(#flow)" stroke-width="1.5" fill="none" opacity="0.8"/>
+          <path d="M 200 140 Q 240 60 290 60"    stroke="url(#flow)" stroke-width="1.5" fill="none" opacity="0.55"/>
+          <path d="M 200 140 Q 240 220 290 220"  stroke="url(#flow)" stroke-width="1.5" fill="none" opacity="0.55"/>
+
+          <g>
+            <rect x="20" y="44" width="90" height="32" rx="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)"/>
+            <text x="65" y="64" fill="#ACACAC" font-size="10" font-family="JetBrains Mono" text-anchor="middle">LOS SYSTEM</text>
+            <rect x="20" y="124" width="90" height="32" rx="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)"/>
+            <text x="65" y="144" fill="#ACACAC" font-size="10" font-family="JetBrains Mono" text-anchor="middle">DOC VENDOR</text>
+            <rect x="20" y="204" width="90" height="32" rx="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)"/>
+            <text x="65" y="224" fill="#ACACAC" font-size="10" font-family="JetBrains Mono" text-anchor="middle">CREDIT / APPR</text>
+          </g>
+
+          <circle cx="200" cy="140" r="46" fill="none" stroke="rgba(63,147,208,0.3)" stroke-width="1"/>
+          <circle cx="200" cy="140" r="32" fill="#090318" stroke="#3F93D0" stroke-width="1.5"/>
+          <text x="200" y="138" fill="#FFFFFF" font-size="14" font-weight="700" text-anchor="middle" font-family="Manrope">Relai</text>
+          <text x="200" y="154" fill="#2ED3C4" font-size="8" text-anchor="middle" font-family="JetBrains Mono" letter-spacing="1">ORCHESTRATOR</text>
+
+          <g>
+            <rect x="290" y="44" width="90" height="32" rx="6" fill="rgba(46,211,196,0.08)" stroke="rgba(46,211,196,0.3)"/>
+            <text x="335" y="64" fill="#2ED3C4" font-size="10" font-family="JetBrains Mono" text-anchor="middle">UNDERWRITER</text>
+            <rect x="290" y="124" width="90" height="32" rx="6" fill="rgba(46,211,196,0.08)" stroke="rgba(46,211,196,0.3)"/>
+            <text x="335" y="144" fill="#2ED3C4" font-size="10" font-family="JetBrains Mono" text-anchor="middle">PROCESSOR</text>
+            <rect x="290" y="204" width="90" height="32" rx="6" fill="rgba(46,211,196,0.08)" stroke="rgba(46,211,196,0.3)"/>
+            <text x="335" y="224" fill="#2ED3C4" font-size="10" font-family="JetBrains Mono" text-anchor="middle">CLOSER</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Product 3 — Exception Routing -->
+    <div class="product-row">
+      <div>
+        <div class="product-tag">EXCEPTION ROUTING</div>
+        <h3>True exceptions, routed with full context.</h3>
+        <p>When a real problem surfaces, Relai doesn't just flag it — it routes it to the right expert with everything they need to resolve it fast. Your best people do judgment work. Everything else just flows.</p>
+        <a href="#" class="product-link">How routing works →</a>
+      </div>
+      <div class="product-visual">
+        <div style="display:flex; gap:10px; margin-bottom: 14px; align-items:center;">
+          <span style="width:8px; height:8px; border-radius:50%; background: var(--coral); box-shadow: 0 0 0 4px rgba(242,107,107,0.15);"></span>
+          <span style="font-size: 11px; color: var(--ink-50); font-family: var(--font-mono); letter-spacing: 0.05em; text-transform: uppercase; font-weight:600;">Exception detected</span>
+        </div>
+        <div class="mock-card" style="border-color: rgba(242,107,107,0.35); background: #fff;">
+          <span class="dot" style="background: var(--coral);"></span>
+          <div>
+            <strong style="font-weight:700;">Appraisal variance &gt;10%</strong>
+            <div style="font-size:11px; color: var(--ink-50); margin-top:3px;">Loan #24-8291 · 15% over original</div>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:center; padding: 10px 0;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3F93D0" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+        </div>
+        <div class="mock-card" style="background: linear-gradient(135deg, rgba(46,211,196,0.08), rgba(63,147,208,0.08)); border-color: rgba(46,211,196,0.35);">
+          <span class="dot"></span>
+          <div>
+            <strong style="font-weight:700;">Routed to Sarah L., Sr. UW</strong>
+            <div style="font-size:11px; color: var(--ink-50); margin-top:3px;">Full context attached · Suggested next step</div>
+          </div>
+          <span class="mock-time" style="color: var(--teal); font-weight:600;">2s</span>
+        </div>
+        <div style="margin-top: 12px; padding: 11px 12px; background: var(--ink-05); border-radius: 8px; font-size: 11px; color: var(--ink-50); line-height: 1.5;">
+          Resolution time reduced from <strong style="color:var(--navy);">4.2 days</strong> to <strong style="color:var(--teal);">90 minutes</strong> on average.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================
+     TESTIMONIAL
+     ============================================ -->
+<section class="testimonial">
+  <span class="section-label">08 · TESTIMONIAL</span>
+  <div class="container">
+    <div class="quote">
+      <div class="quote-logo">CUSTOMER LOGO</div>
+      <div class="quote-mark">"</div>
+      <blockquote>My team stopped chasing status and started closing loans. The best part is that Relai just runs in the background — we forget it's there until we see the numbers at the end of the month.</blockquote>
+      <cite>
+        <strong>[Name Placeholder]</strong>
+        VP of Operations · [Lender Name]
+      </cite>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     FINAL CTA
+     ============================================ -->
+<section class="cta-final">
+  <span class="section-label">09 · FINAL CTA</span>
+  <div class="container">
+    <h2>Ready to see Relai<br>in your LOS?</h2>
+    <p>Twenty minutes. We'll walk through your production setup and show you exactly where Relai fits — and what the economics look like at your volume.</p>
+    <div class="hero-ctas" style="justify-content: center;">
+      <a href="#" class="btn btn-primary btn-arrow">Book a Discovery Call</a>
+      <a href="#" class="btn btn-ghost btn-arrow">Download the one-sheeter</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     FOOTER
+     ============================================ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="../assets/logo-white.png" alt="TRAiNED">
+        <p>The orchestration layer connecting the mortgage assembly line. Headquartered in Pittsburgh, PA.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="#">Relai Central</a></li>
+          <li><a href="#">Orchestration</a></li>
+          <li><a href="#">Exception Routing</a></li>
+          <li><a href="#">Integrations</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Solutions</h4>
+        <ul>
+          <li><a href="#">For IMBs</a></li>
+          <li><a href="#">For Credit Unions</a></li>
+          <li><a href="#">For Banks</a></li>
+          <li><a href="#">For Correspondents</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Customers</a></li>
+          <li><a href="#">Newsroom</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Guides</a></li>
+          <li><a href="#">Security</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 TRAiNED, Inc. All rights reserved.</span>
+      <div style="display:flex; gap: 24px;">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Security</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================
+     TWEAKS PANEL
+     ============================================ -->
+<div id="tweaks" aria-hidden="true">
+  <h4>Tweaks</h4>
+
+  <div class="row">
+    <label>Hero background</label>
+    <div class="segmented" data-tweak="heroBg">
+      <button data-v="soft">Soft</button>
+      <button data-v="signal">Signal</button>
+      <button data-v="grid">Grid</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <label>Accent color</label>
+    <div class="segmented" data-tweak="accent">
+      <button data-v="violet"><span class="swatch" style="background:#6B5CF6"></span>Violet</button>
+      <button data-v="teal"><span class="swatch" style="background:#2ED3C4"></span>Teal</button>
+      <button data-v="ocean"><span class="swatch" style="background:#3F93D0"></span>Ocean</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <label class="toggle"><input type="checkbox" id="tw-annotations"> Show wireframe annotations</label>
+  </div>
+</div>
+
+<script>
+(function(){
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "heroBg": "grid",
+    "accent": "violet",
+    "annotations": false
+  }/*EDITMODE-END*/;
+
+  const state = Object.assign({}, TWEAK_DEFAULTS);
+  const ACCENT_MAP = { violet: '#6B5CF6', teal: '#2ED3C4', ocean: '#3F93D0' };
+
+  function apply() {
+    document.body.setAttribute('data-herobg', state.heroBg);
+    document.documentElement.style.setProperty('--accent', ACCENT_MAP[state.accent] || ACCENT_MAP.violet);
+    document.body.classList.toggle('annotations-on', !!state.annotations);
+    // update segmented button states
+    document.querySelectorAll('#tweaks [data-tweak]').forEach(group => {
+      const key = group.getAttribute('data-tweak');
+      group.querySelectorAll('button').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-v') === state[key]);
+      });
+    });
+    const annCb = document.getElementById('tw-annotations');
+    if (annCb) annCb.checked = !!state.annotations;
+  }
+
+  function persist(patch) {
+    try { window.parent.postMessage({type: '__edit_mode_set_keys', edits: patch}, '*'); } catch(e){}
+  }
+
+  document.querySelectorAll('#tweaks [data-tweak] button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.parentElement.getAttribute('data-tweak');
+      const v = btn.getAttribute('data-v');
+      state[key] = v;
+      apply();
+      persist({[key]: v});
+    });
+  });
+  document.getElementById('tw-annotations').addEventListener('change', (e) => {
+    state.annotations = !!e.target.checked;
+    apply();
+    persist({annotations: state.annotations});
+  });
+
+  // listener first, then announce availability
+  window.addEventListener('message', (ev) => {
+    const t = ev?.data?.type;
+    if (t === '__activate_edit_mode') document.getElementById('tweaks').classList.add('on');
+    if (t === '__deactivate_edit_mode') document.getElementById('tweaks').classList.remove('on');
+  });
+  try { window.parent.postMessage({type: '__edit_mode_available'}, '*'); } catch(e){}
+
+  apply();
+
+  // ---- Mega-menu hover/leave (desktop default) ----
+  document.querySelectorAll('.nav-links .has-menu').forEach(item => {
+    let closeTimer = null;
+    const open  = () => { clearTimeout(closeTimer); item.classList.add('open');
+                          item.querySelector('[aria-haspopup]')?.setAttribute('aria-expanded','true'); };
+    const close = () => { closeTimer = setTimeout(() => {
+                          item.classList.remove('open');
+                          item.querySelector('[aria-haspopup]')?.setAttribute('aria-expanded','false');
+                         }, 120); };
+    item.addEventListener('mouseenter', open);
+    item.addEventListener('mouseleave', close);
+    item.addEventListener('focusin', open);
+    item.addEventListener('focusout', (e) => { if (!item.contains(e.relatedTarget)) close(); });
+  });
+  // click-outside safety net
+  document.addEventListener('click', (e) => {
+    document.querySelectorAll('.nav-links .has-menu.open').forEach(item => {
+      if (!item.contains(e.target)) item.classList.remove('open');
+    });
+  });
+})();
+</script>
+
+<!-- ============================================ ORCHESTRATION DIAGRAM JS ============================================ -->
+<script>
+(function(){
+  const orch = document.getElementById('orch');
+  if (!orch) return;
+  const caption = document.getElementById('orchCaption');
+  const captionTitle = caption.querySelector('strong');
+  const captionDesc  = caption.querySelector('span');
+  const nodes = orch.querySelectorAll('.orch-node');
+  const lines = orch.querySelectorAll('.line');
+  const pulses = orch.querySelectorAll('.pulse');
+
+  // ---- Hover / focus interaction ----
+  function activate(name) {
+    nodes.forEach(n => n.classList.toggle('is-active', n.dataset.node === name));
+    lines.forEach(l => l.classList.toggle('active', l.dataset.line === name));
+    const node = orch.querySelector(`.orch-node[data-node="${name}"]`);
+    if (node) {
+      captionTitle.textContent = node.dataset.title;
+      captionDesc.textContent  = node.dataset.desc;
+      caption.classList.add('show');
+    }
+  }
+  function deactivate() {
+    nodes.forEach(n => n.classList.remove('is-active'));
+    lines.forEach(l => l.classList.remove('active'));
+    caption.classList.remove('show');
+  }
+  nodes.forEach(node => {
+    const name = node.dataset.node;
+    const pill = node.querySelector('.orch-pill');
+    pill.tabIndex = 0;
+    pill.addEventListener('mouseenter', () => activate(name));
+    pill.addEventListener('mouseleave', deactivate);
+    pill.addEventListener('focus', () => activate(name));
+    pill.addEventListener('blur', deactivate);
+  });
+
+  // ---- Ambient pulse: ride each path with offset-distance ----
+  // Compute path length once; animate each pulse with stagger.
+  const lineMap = {};
+  lines.forEach(l => { lineMap[l.dataset.line] = l; });
+
+  pulses.forEach((p, i) => {
+    const name = p.dataset.pulse;
+    const line = lineMap[name];
+    if (!line) return;
+    const len = line.getTotalLength();
+    let start = performance.now() + i * 420; // stagger
+    const period = 2800;
+    function tick(now){
+      const t = ((now - start) % period) / period; // 0..1
+      // travel from outer node (1) to center (0), then fade
+      const u = 1 - t;
+      const pt = line.getPointAtLength(u * len);
+      p.setAttribute('cx', pt.x);
+      p.setAttribute('cy', pt.y);
+      // fade in then out
+      const alpha = t < 0.15 ? (t / 0.15) : (t > 0.85 ? (1 - t) / 0.15 : 1);
+      p.setAttribute('opacity', Math.max(0, Math.min(1, alpha)) * 0.85);
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+
+  // ---- Default rotating highlight (idle state) ----
+  const order = ['borrower','encompass','los','investor','compliance','uw','title','appraisal'];
+  let idleIdx = 0, idleTimer = null, paused = false;
+  function idleStep(){
+    if (paused) return;
+    activate(order[idleIdx]);
+    idleIdx = (idleIdx + 1) % order.length;
+    setTimeout(() => { if (!paused) deactivate(); }, 1600);
+  }
+  function startIdle(){ if (idleTimer) return; idleTimer = setInterval(idleStep, 2400); idleStep(); }
+  function stopIdle(){ clearInterval(idleTimer); idleTimer = null; }
+  orch.addEventListener('mouseenter', () => { paused = true; stopIdle(); deactivate(); });
+  orch.addEventListener('mouseleave', () => { paused = false; startIdle(); });
+  // start after a short delay so first frame doesn't jump
+  setTimeout(startIdle, 1200);
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,290 @@
+/* TRAiNED / Relai — Colors & Type tokens
+ * Source: Relai Brand Guide (2).pdf + TRAiNED logo assets.
+ *
+ * NOTE ON COLOR CORRECTIONS:
+ * The supplied brand guide PDF had some hex codes duplicated/garbled in the
+ * extractable text (Electric Teal, Signal Violet, Amber Yellow, Alert Coral
+ * all came through as the same few hex values). We've reconciled them to the
+ * color NAMES the guide uses, picking the closest canonical hex for each
+ * named color. Flag to reviewer: please confirm the secondary/tertiary hexes
+ * below match the authoritative swatches.
+ */
+
+:root {
+  /* ---------- Primary palette ---------- */
+  --color-deep-navy:       #090318; /* Primary Dark — backgrounds, headers, primary text */
+  --color-ocean-blue:      #3F93D0; /* Primary Accent — CTAs, links, highlights, brand accent */
+  --color-neutral-gray:    #ACACAC; /* Secondary text, borders, subtle elements */
+
+  /* ---------- Secondary palette ---------- */
+  --color-electric-teal:   #2ED3C4; /* Hover on CTAs, active UI, product highlights, connectors */
+  --color-signal-violet:   #6B5CF6; /* Hero gradients, feature callouts, key numbers */
+
+  /* ---------- Tertiary palette (status / accents) ---------- */
+  --color-success-green:   #22C55E; /* Growth metrics, "Resolved", "Live", "Active" */
+  --color-amber-yellow:    #F5B841; /* Attention, caution states, small accents */
+  --color-alert-coral:     #F26B6B; /* Crossing out inefficiencies, failed moments, "old process" */
+
+  /* ---------- Logo-mark accents (from TRAiNED wordmark gradient) ---------- */
+  --color-mark-yellow:     #E8E94F; /* top-left spark in mark */
+  --color-mark-lime:       #C7E13B; /* upper-left tile */
+  --color-mark-azure:      #3C8FE0; /* lower-right tile */
+  --color-mark-deep-blue:  #1E40AF; /* deepest blue in mark */
+
+  /* ---------- Neutrals (system ramp built around brand) ---------- */
+  --color-ink:             #090318;
+  --color-ink-2:           #1A1530;
+  --color-ink-3:           #2E2A45;
+  --color-slate:           #5A5A6A;
+  --color-gray:            #ACACAC;
+  --color-gray-2:          #D4D4DB;
+  --color-gray-3:          #E8E8EE;
+  --color-off-white:       #F4F5F9;
+  --color-white:           #FFFFFF;
+
+  /* ---------- Semantic surfaces ---------- */
+  --bg:                    var(--color-white);
+  --bg-subtle:             var(--color-off-white);
+  --bg-inverse:            var(--color-deep-navy);
+  --surface-card:          var(--color-white);
+  --surface-raised:        var(--color-white);
+  --surface-muted:         var(--color-off-white);
+
+  /* ---------- Semantic text ---------- */
+  --fg-1:                  var(--color-deep-navy); /* primary text */
+  --fg-2:                  var(--color-slate);     /* secondary */
+  --fg-3:                  var(--color-gray);      /* tertiary / meta */
+  --fg-inverse:            var(--color-white);
+  --fg-accent:             var(--color-ocean-blue);
+  --fg-link:               var(--color-ocean-blue);
+
+  /* ---------- Semantic status ---------- */
+  --status-success:        var(--color-success-green);
+  --status-warning:        var(--color-amber-yellow);
+  --status-danger:         var(--color-alert-coral);
+  --status-info:           var(--color-ocean-blue);
+  --status-active:         var(--color-electric-teal);
+
+  /* ---------- Borders & dividers ---------- */
+  --border-subtle:         #E8E8EE;
+  --border-default:        #D4D4DB;
+  --border-strong:         #ACACAC;
+  --border-inverse:        rgba(255,255,255,0.12);
+
+  /* ---------- Signature gradients ---------- */
+  /* Brand mark gradient — yellow → lime → azure → deep blue */
+  --grad-mark:
+    linear-gradient(135deg, #E8E94F 0%, #C7E13B 28%, #3C8FE0 72%, #1E40AF 100%);
+  /* Hero gradient — cool, calm, orchestration vibe */
+  --grad-hero:
+    linear-gradient(135deg, #090318 0%, #1E40AF 55%, #3F93D0 100%);
+  /* Signal gradient — violet → teal, for feature callouts */
+  --grad-signal:
+    linear-gradient(120deg, #6B5CF6 0%, #3F93D0 55%, #2ED3C4 100%);
+  /* Soft surface wash */
+  --grad-surface:
+    linear-gradient(180deg, #F4F5F9 0%, #FFFFFF 100%);
+
+  /* ---------- Type system ---------- */
+  /* Manrope — specified by brand guide ("Manrope") */
+  /* Fallback to Inter/system if Manrope is unavailable */
+  --font-sans: 'Manrope', 'Inter', system-ui, -apple-system, 'Segoe UI',
+               Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas,
+               'Liberation Mono', monospace;
+  --font-display: var(--font-sans);
+
+  /* Type scale (modular, 1.25 ratio around 16 base) */
+  --fs-12:  0.75rem;   /* 12px — micro / labels */
+  --fs-13:  0.8125rem; /* 13px — caption */
+  --fs-14:  0.875rem;  /* 14px — body small */
+  --fs-16:  1rem;      /* 16px — body */
+  --fs-18:  1.125rem;  /* 18px — body large / lead */
+  --fs-20:  1.25rem;   /* 20px — h5 */
+  --fs-24:  1.5rem;    /* 24px — h4 */
+  --fs-30:  1.875rem;  /* 30px — h3 */
+  --fs-36:  2.25rem;   /* 36px — h2 */
+  --fs-48:  3rem;      /* 48px — h1 */
+  --fs-60:  3.75rem;   /* 60px — display */
+  --fs-72:  4.5rem;    /* 72px — display xl (hero) */
+
+  /* Weights — Manrope ships 200..800; we use 400/500/600/700/800 */
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+  --fw-extra:    800;
+
+  /* Line heights */
+  --lh-tight:   1.1;
+  --lh-snug:    1.25;
+  --lh-normal:  1.45;
+  --lh-relaxed: 1.6;
+
+  /* Letter spacing */
+  --tracking-tight:  -0.02em;
+  --tracking-snug:   -0.01em;
+  --tracking-normal: 0;
+  --tracking-wide:   0.04em;
+  --tracking-wider:  0.12em; /* eyebrows, tiny labels: "INTEGRATE. AUTOMATE. ACCELERATE." */
+
+  /* ---------- Spacing scale (4pt grid) ---------- */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  /* ---------- Radii ---------- */
+  --radius-xs:   4px;
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   14px;
+  --radius-xl:   20px;
+  --radius-2xl:  28px;
+  --radius-pill: 999px;
+
+  /* ---------- Shadows (cool-blue tinted) ---------- */
+  --shadow-xs:  0 1px 2px rgba(9, 3, 24, 0.06);
+  --shadow-sm:  0 1px 2px rgba(9, 3, 24, 0.05), 0 2px 6px rgba(9, 3, 24, 0.06);
+  --shadow-md:  0 4px 10px rgba(9, 3, 24, 0.07), 0 2px 4px rgba(9, 3, 24, 0.05);
+  --shadow-lg:  0 10px 24px rgba(9, 3, 24, 0.10), 0 4px 8px rgba(9, 3, 24, 0.05);
+  --shadow-xl:  0 24px 48px rgba(9, 3, 24, 0.14), 0 8px 16px rgba(9, 3, 24, 0.06);
+  --shadow-focus: 0 0 0 3px rgba(63, 147, 208, 0.35); /* ocean blue focus ring */
+  --shadow-inset: inset 0 1px 0 rgba(255,255,255,0.6);
+
+  /* ---------- Motion ---------- */
+  --ease-out:      cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-in-out:   cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --dur-fast:   140ms;
+  --dur-base:   220ms;
+  --dur-slow:   360ms;
+}
+
+/* ------------------------------------------------------------------ *
+ * Base / semantic typography
+ * ------------------------------------------------------------------ */
+html { font-family: var(--font-sans); color: var(--fg-1); background: var(--bg); }
+body { font-family: var(--font-sans); font-size: var(--fs-16); line-height: var(--lh-normal); color: var(--fg-1); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+.display,
+.h-display {
+  font-family: var(--font-display);
+  font-weight: var(--fw-extra);
+  font-size: clamp(var(--fs-48), 6vw, var(--fs-72));
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--fg-1);
+}
+
+h1, .h1 {
+  font-weight: var(--fw-extra);
+  font-size: var(--fs-48);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--fg-1);
+}
+h2, .h2 {
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-36);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-snug);
+  color: var(--fg-1);
+}
+h3, .h3 {
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-30);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-snug);
+  color: var(--fg-1);
+}
+h4, .h4 {
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-24);
+  line-height: var(--lh-snug);
+  color: var(--fg-1);
+}
+h5, .h5 {
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-20);
+  line-height: var(--lh-snug);
+  color: var(--fg-1);
+}
+h6, .h6 {
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-16);
+  line-height: var(--lh-snug);
+  color: var(--fg-1);
+}
+
+.lead, .p-lead {
+  font-size: var(--fs-18);
+  line-height: var(--lh-relaxed);
+  color: var(--fg-2);
+  font-weight: var(--fw-regular);
+}
+
+p, .p {
+  font-size: var(--fs-16);
+  line-height: var(--lh-relaxed);
+  color: var(--fg-1);
+}
+
+.p-sm, small {
+  font-size: var(--fs-14);
+  line-height: var(--lh-normal);
+  color: var(--fg-2);
+}
+
+.caption {
+  font-size: var(--fs-13);
+  line-height: var(--lh-normal);
+  color: var(--fg-3);
+}
+
+.eyebrow {
+  font-size: var(--fs-12);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--fg-accent);
+}
+
+code, kbd, samp, pre, .mono {
+  font-family: var(--font-mono);
+  font-size: 0.95em;
+}
+
+a, .link {
+  color: var(--fg-link);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+a:hover, .link:hover {
+  border-bottom-color: currentColor;
+}
+
+/* Gradient text — signature Relai "Ai" treatment */
+.text-gradient-mark {
+  background: var(--grad-mark);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}
+.text-gradient-signal {
+  background: var(--grad-signal);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}

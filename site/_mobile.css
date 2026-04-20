@@ -1,0 +1,196 @@
+/* =========================================================
+   Relai / TRAiNED — shared mobile responsive layer
+   Apply on top of page-specific CSS.
+   ========================================================= */
+
+/* Prevent horizontal scroll on any page */
+html, body { overflow-x: hidden; }
+
+/* ---- Hamburger + mobile drawer ---- */
+.mobile-hamburger {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--ink-10);
+  border-radius: 8px;
+  width: 40px; height: 40px;
+  align-items: center; justify-content: center;
+  cursor: pointer;
+  color: var(--navy);
+  transition: background 140ms ease, border-color 140ms ease;
+}
+.mobile-hamburger:hover { background: var(--ink-05, #F7F7F2); border-color: var(--ink-30); }
+.mobile-hamburger svg { width: 20px; height: 20px; }
+
+.mobile-drawer {
+  position: fixed; inset: 0; z-index: 80;
+  visibility: hidden; opacity: 0;
+  transition: opacity 220ms ease, visibility 220ms;
+  pointer-events: none;
+}
+.mobile-drawer.open { visibility: visible; opacity: 1; pointer-events: auto; }
+.mobile-drawer .backdrop {
+  position: absolute; inset: 0;
+  background: rgba(9, 3, 24, 0.45);
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+}
+.mobile-drawer .sheet {
+  position: absolute; top: 0; right: 0; bottom: 0;
+  width: min(88vw, 360px);
+  background: var(--white);
+  display: flex; flex-direction: column;
+  padding: 20px 22px calc(20px + env(safe-area-inset-bottom));
+  transform: translateX(100%);
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  overflow-y: auto;
+  box-shadow: -12px 0 40px -12px rgba(9,3,24,0.25);
+}
+.mobile-drawer.open .sheet { transform: translateX(0); }
+.drawer-top {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--ink-10);
+  margin-bottom: 20px;
+}
+.drawer-top img { height: 24px; width: auto; }
+.drawer-close {
+  background: transparent; border: 0; cursor: pointer;
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  color: var(--ink-70); border-radius: 8px;
+}
+.drawer-close:hover { background: var(--ink-05, #F7F7F2); color: var(--navy); }
+
+.drawer-links {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: 2px;
+  flex: 1;
+}
+.drawer-links a {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 10px;
+  font-size: 16px; font-weight: 500;
+  color: var(--navy); text-decoration: none;
+  border-radius: 8px;
+  min-height: 48px;
+}
+.drawer-links a:hover, .drawer-links a:active { background: var(--ink-05, #F7F7F2); }
+.drawer-links details { border: 0; }
+.drawer-links summary {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 10px;
+  font-size: 16px; font-weight: 500;
+  color: var(--navy);
+  cursor: pointer;
+  list-style: none;
+  border-radius: 8px;
+  min-height: 48px;
+}
+.drawer-links summary::-webkit-details-marker { display: none; }
+.drawer-links summary::after {
+  content: "+"; font-size: 20px; font-weight: 300; color: var(--ink-50);
+  transition: transform 200ms ease;
+}
+.drawer-links details[open] summary::after { content: "–"; }
+.drawer-links details ul {
+  list-style: none; padding: 4px 10px 8px 20px; margin: 0;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.drawer-links details ul a {
+  font-size: 15px; font-weight: 400; color: var(--ink-70);
+  padding: 10px 8px; min-height: 40px;
+}
+.drawer-bottom {
+  padding-top: 18px; margin-top: 18px;
+  border-top: 1px solid var(--ink-10);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.drawer-bottom .btn,
+.drawer-bottom a {
+  display: flex; align-items: center; justify-content: center;
+  padding: 14px 18px;
+  border-radius: 999px;
+  font-size: 15px; font-weight: 600;
+  text-decoration: none;
+  min-height: 48px;
+}
+.drawer-bottom .login {
+  color: var(--navy); border: 1px solid var(--ink-10); background: var(--white);
+}
+.drawer-bottom .cta {
+  background: var(--navy); color: var(--white);
+}
+
+body.drawer-open { overflow: hidden; }
+
+/* Show hamburger / hide nav links on narrow */
+@media (max-width: 880px) {
+  .mobile-hamburger { display: inline-flex; }
+  .nav-links { display: none !important; }
+  .nav-ctas .nav-ghost { display: none; }
+  .nav-ctas .btn-primary { padding: 10px 16px; font-size: 13px; }
+}
+
+/* Even tighter on very small screens */
+@media (max-width: 520px) {
+  .nav-ctas .btn-primary { display: none; }
+  .nav-inner { padding: 12px 16px !important; }
+  .nav-logo img { height: 24px !important; }
+}
+
+/* =========================================================
+   Hero typography guardrails
+   Section-specific grids already collapse; we just tighten padding + type.
+   ========================================================= */
+@media (max-width: 640px) {
+  h1 { font-size: clamp(32px, 9vw, 44px) !important; line-height: 1.08 !important; }
+  h2 { font-size: clamp(26px, 6.5vw, 34px) !important; line-height: 1.12 !important; }
+  .hero, .article-hero { padding-left: 0 !important; padding-right: 0 !important; }
+  .hero .container, .hero-inner { padding-left: 16px !important; padding-right: 16px !important; }
+  section { padding-left: 0; padding-right: 0; }
+  .container { padding-left: 16px !important; padding-right: 16px !important; }
+}
+
+/* Ensure all interactive things are tap-friendly */
+@media (max-width: 880px) {
+  .btn, button, .card, .chip, .explore-item, .share-item { min-height: 44px; }
+  input, select, textarea { min-height: 44px; font-size: 16px; /* avoid iOS zoom */ }
+}
+
+/* =========================================================
+   Journal-specific: reader widget safe area + tighter margins
+   ========================================================= */
+@media (max-width: 640px) {
+  .reader-fab { right: 16px; bottom: calc(16px + env(safe-area-inset-bottom)); width: 44px; height: 44px; }
+  .reader-panel { right: 12px; left: 12px; bottom: calc(72px + env(safe-area-inset-bottom));
+                  width: auto; max-height: 70vh; overflow-y: auto; }
+  .time-left { bottom: calc(74px + env(safe-area-inset-bottom)); font-size: 10px; padding: 6px 10px; }
+  .read-progress { height: 2px; }
+  .prose { max-width: 100% !important; text-align: left !important; hyphens: auto; }
+  .prose > p:first-of-type::first-letter { font-size: 3.4em; }
+  .article { padding: 24px 16px 60px !important; gap: 24px !important; }
+  .hero-title { font-size: clamp(28px, 8vw, 38px) !important; }
+  .hero-dek { font-size: 15px !important; }
+  .article-hero { padding: 48px 0 !important; }
+  .hero-inner { padding: 0 16px !important; }
+  .hero-fig { aspect-ratio: 4 / 3; }
+}
+
+/* =========================================================
+   Resources-specific: filter bar + search wrap on mobile
+   ========================================================= */
+@media (max-width: 640px) {
+  .filter-bar, .search-row { flex-direction: column !important; align-items: stretch !important; gap: 12px !important; }
+  .filter-bar select, .search input { width: 100% !important; }
+  .featured-card { padding: 20px !important; }
+  .featured-card h2 { font-size: 24px !important; }
+}
+
+/* =========================================================
+   Homepage-specific: product mocks + pillars
+   ========================================================= */
+@media (max-width: 640px) {
+  .product-row, .split-inner { padding: 0 !important; }
+  .mock { transform: none !important; }
+  .trust-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 16px !important; }
+  .footer-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+}
