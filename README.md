@@ -4,7 +4,9 @@ A satisfying **hoof cleaning & trimming** mobile game prototype — inspired by 
 
 **Playable HTML5 prototype** — portrait, phone-first, works with touch or mouse. No build step, no dependencies at runtime.
 
-## Play it
+**▶ Play online:** https://wardam10-gif.github.io/relai-wireframes/ (or [`/play.html`](https://wardam10-gif.github.io/relai-wireframes/play.html) for the single-file build)
+
+## Play it locally
 
 ```bash
 python3 -m http.server 8080
