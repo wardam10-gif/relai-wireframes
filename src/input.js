@@ -19,7 +19,8 @@ export function initInput(canvas, handler) {
   canvas.addEventListener('pointerdown', e => {
     if (activeId !== null) return;
     activeId = e.pointerId;
-    canvas.setPointerCapture(e.pointerId);
+    // some mobile webviews throw here; capture is a nicety, not a requirement
+    try { canvas.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
     const p = toLogical(e);
     last = p;
     handler({ type: 'down', x: p.x, y: p.y, dx: 0, dy: 0, down: true });
@@ -27,7 +28,7 @@ export function initInput(canvas, handler) {
   });
 
   canvas.addEventListener('pointermove', e => {
-    if (e.pointerId !== activeId) return;
+    if (e.pointerId !== activeId || !last) return;
     const p = toLogical(e);
     handler({ type: 'move', x: p.x, y: p.y, dx: p.x - last.x, dy: p.y - last.y, down: true });
     last = p;
@@ -37,6 +38,7 @@ export function initInput(canvas, handler) {
   const end = e => {
     if (e.pointerId !== activeId) return;
     activeId = null;
+    last = null;
     const p = toLogical(e);
     handler({ type: 'up', x: p.x, y: p.y, dx: 0, dy: 0, down: false });
     e.preventDefault();
