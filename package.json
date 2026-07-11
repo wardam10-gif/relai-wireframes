@@ -1,0 +1,18 @@
+{
+  "name": "hoof-hero",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Hoof Hero — a satisfying hoof cleaning & trimming game (HTML5 prototype)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wardam10-gif/relai-wireframes.git"
+  },
+  "scripts": {
+    "serve": "python3 -m http.server 8080",
+    "verify": "node scripts/verify.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.61.1"
+  }
+}

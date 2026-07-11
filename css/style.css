@@ -1,0 +1,38 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  background: #17110c;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+canvas {
+  display: block;
+  touch-action: none;
+  border-radius: 6px;
+}
+
+/* ?dumpLevels debug table */
+table.levels {
+  color: #e8dcc8;
+  font: 12px monospace;
+  border-collapse: collapse;
+  margin: 12px;
+}
+table.levels td, table.levels th {
+  border: 1px solid #4a3c2c;
+  padding: 3px 7px;
+  white-space: nowrap;
+}
+table.levels tr.gate { background: #4a1f1f; }
+table.levels tr.bonus { background: #1f4a2a; }
