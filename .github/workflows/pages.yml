@@ -28,12 +28,12 @@ jobs:
         with:
           path: .
 
+  # No job-level `environment:` block: the auto-created github-pages
+  # environment carries a branch policy that rejects the job before it starts.
+  # deploy-pages creates the Pages deployment itself via the API.
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
